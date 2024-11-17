@@ -1,59 +1,28 @@
-import { useState, useRef } from "react";
-import { useParams } from "../../context/context";
-import { person, destination } from "../../assets/icons";
+import { useState } from "react";
 import "./Grid.css";
 
-export default function Grid() {
-  const { grid } = useParams();
+export default function Grid(props) {
+  // eslint-disable-next-line react/prop-types
+  const { Grid, handleClick } = props;
 
-  const [refarray] = useState(getrefarray(grid));
+  const [grid] = useState(Grid);
 
-  function getrefarray(grid) {
-    let array = [];
-    grid.forEach((elem) => {
-      elem.forEach(() => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        array.push(useRef());
-      });
-    });
-    return array;
-  }
   return (
-    <div className="w-full h-full">
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${grid[0].length}, minmax(0, 1fr))`,
-          gap: "0px",
-          aspectRatio: `${grid[0].length} / ${grid.length}`,
-        }}
-      >
-        {grid.map((row, i) =>
-          row.map((cell, j) => (
-            <div
-              key={`${i}-${j}`}
-              ref={refarray[i * grid[0].length + j]}
-              className={[
-                "aspect-square border border-gray-300 flex items-center justify-center relative",
-                cell.iswall ? "bg-gray-800" : "",
-                cell.isstart ? "bg-green-500" : "",
-                cell.istarget ? "bg-red-500" : "",
-                cell.weight > 1 ? "bg-yellow-500" : "",
-              ].join(" ")}
-            >
-              {cell.isstart && (
-                <svg className="w-full h-full" viewBox="0 0 24 24">
-                  {person}
-                </svg>
-              )}
-              {cell.istarget && (
-                <svg className="w-full h-full" viewBox="0 0 24 24">
-                  {destination}
-                </svg>
-              )}
-            </div>
-          ))
-        )}
+    <div>
+      <div className="grid">
+        {grid.map((row, rowIndex) => (
+          <div key={rowIndex} className="grid-row">
+            {row.map((node) => (
+              <div
+                key={`${rowIndex}${node}`}
+                className={`grid-cell ${node.isStart ? "start" : ""} 
+                ${node.isEnd ? "end" : ""} 
+                ${node.isWall ? "wall" : ""} h-8 w-8`}
+                onClick={() => handleClick(node.row, node.col)}
+              ></div>
+            ))}
+          </div>
+        ))}
       </div>
     </div>
   );
