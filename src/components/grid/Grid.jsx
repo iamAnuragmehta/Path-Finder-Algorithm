@@ -21,7 +21,7 @@ export default function Grid(props) {
                 onMouseDown={() => {}} // start wall edit mode
                 onMouseMove={() => {}} // add or remove wall
                 onMouseUp={() => {}} // end wall edit mode
-              >{`${rowIndex}-${nodeIndex}`}</div>
+              ></div>
             ))}
           </div>
         ))}
