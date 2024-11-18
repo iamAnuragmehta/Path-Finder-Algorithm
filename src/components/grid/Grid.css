@@ -1,3 +1,32 @@
-.cell{
-  border: black;
+/* src/components/Grid.css */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(30, 0fr);
+  gap: 0px;
+}
+
+.grid-cell {
+  background-color: white;
+  border: 1px solid #ccc;
+  transition: 0.3s;
+}
+
+.start {
+  background-color: green;
+}
+
+.end {
+  background-color: red;
+}
+
+.wall {
+  background-color: black;
+}
+
+.energy {
+  background-color: yellow;
+}
+
+.path {
+  background-color: blue;
 }

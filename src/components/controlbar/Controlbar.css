@@ -2,3 +2,13 @@
   background-color: #fff;
   color: #000;
 }
+
+.sidebar{
+  transition: 0.3s;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.sidebar:hover {
+  width: 15rem;
+}
