@@ -8,6 +8,7 @@
 .grid-cell {
   background-color: white;
   border: 1px solid #ccc;
+  transition: 0.3s;
 }
 
 .start {
@@ -20,6 +21,10 @@
 
 .wall {
   background-color: black;
+}
+
+.energy {
+  background-color: yellow;
 }
 
 .path {
