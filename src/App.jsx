@@ -30,9 +30,9 @@ export default function App() {
           isWall: false,
           isEnergy: false,
           distance: Infinity,
+          isPath: false,
           isTraversed: false,
           parent: null,
-          isPath: false,
         });
       }
       grid.push(currentRow);
@@ -108,11 +108,35 @@ export default function App() {
     setGrid(newGrid);
   }
 
-  function reset() {
-    // temp => new grid; future => clear path
-    const newGrid = createInitialGrid(MAX_ROWS, MAX_COLS).slice();
-    setStart(false);
-    setEnd(false);
+  function clearboard(grid) {
+    console.log("hi")
+    const newGrid = grid.slice();
+    for (let row  = 0; row < MAX_ROWS; row++) {
+      for (let col = 0; col < MAX_COLS; col++) {
+        const tile = newGrid[row][col];
+        tile.isStart = false
+        tile.isEnd = false
+        tile.isWall = false
+        tile.isEnergy = false
+        tile.distance = Infinity
+        tile.isPath = false
+        tile.isTraversed = false     
+      }
+    }
+    setGrid(newGrid);
+  }
+
+  function reset(grid) {
+    console.log("hi")
+    const newGrid = grid.slice();
+    for (let row  = 0; row < MAX_ROWS; row++) {
+      for (let col = 0; col < MAX_COLS; col++) {
+        const tile = grid[row][col];
+        tile.distance = Infinity
+        tile.isPath = false
+        tile.isTraversed = false      
+      }
+    }
     setGrid(newGrid);
   }
 
@@ -120,7 +144,10 @@ export default function App() {
     const newGrid = grid.slice();
     console.log(startTile);
     if (algo === "dijkstra") {
-      dijkstra(newGrid, startTile, endTile);
+      let { traversedTiles, path } = dijkstra(newGrid, startTile, endTile);
+      animatePath(traversedTiles, path, startTile, endTile);
+      console.log(traversedTiles);
+      console.log(path);
     } else if (algo === "bellman-ford") {
       return;
     }
@@ -129,9 +156,53 @@ export default function App() {
     setRun(false);
   }
 
+  function animatePath(traversedTiles, path, startTile, endTile) {
+    for (let i = 0; i < traversedTiles.length; i++) {
+      setTimeout(() => {
+        const currentTile = traversedTiles[i];
+        if (
+          !(
+            currentTile.row === startTile.row &&
+            currentTile.col === startTile.col
+          ) &&
+          !(currentTile.row === endTile.row && currentTile.col === endTile.col)
+        ) {
+          document
+            .getElementById(`${currentTile.row}-${currentTile.col}`)
+            .classList.add("traversed");
+        }
+      }, 30 * i);
+    }
+
+    for (let i = 0; i < path.length; i++) {
+      setTimeout(() => {
+        const currentTile = path[i];
+        if (
+          !(
+            currentTile.row === startTile.row &&
+            currentTile.col === startTile.col
+          ) &&
+          !(currentTile.row === endTile.row && currentTile.col === endTile.col)
+        ) {
+          const tile = document.getElementById(
+            `${currentTile.row}-${currentTile.col}`
+          );
+          tile.classList.remove("traversed");
+          tile.classList.add("path");
+        }
+      }, 30 * traversedTiles.length + 300 * i);
+    }
+
+    setTimeout(
+      () => console.log("Animation complete."),
+      30 * traversedTiles.length + 300 * path.length
+    );
+  }
+
   return (
-    <div className="grid grid-flow-col">
+    <div>
       <Controlbar
+        grid={grid}
         mode={mode}
         setMode={setMode}
         algo={algo}
@@ -140,6 +211,7 @@ export default function App() {
         setRun={setRun}
         setGrid={setGrid}
         reset={reset}
+        clearboard={clearboard}
         Visualize={Visualize}
       />
       <Grid grid={grid} handleClick={handleClick} />

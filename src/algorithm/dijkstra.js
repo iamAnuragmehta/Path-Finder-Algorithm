@@ -51,6 +51,7 @@ export const dijkstra = (grid, start, end) => {
     let current = grid[end.row][end.col];
     while (current !== null) {
         current.isPath = true;
+        current.isTraversed = false;
         if (current.isStart === true) { current.isPath = false }
         if (current.isEnd === true) { current.isPath = false }
         path.unshift(current);
