@@ -10,11 +10,11 @@ import "./Controlbar.css";
 
 export default function Controlbar(props) {
   // eslint-disable-next-line react/prop-types
-  const { mode, setMode, algo, setAlgo, setRun, setGrid, reset, Visualize } =
+  const { grid, mode, setMode, algo, setAlgo, setRun, setGrid, reset, clearboard, Visualize } =
     props;
 
   return (
-    <div className="sidebar flex flex-col h-full w-14 fixed top-0 right-0 overflow-hidden bg-gray-900">
+    <div className="sidebar flex flex-wrap sm:flex-nowrap justify-center sm:justify-start flex-row sm:flex-col w-full sm:h-full sm:w-14 fixed top-0 sm:right-0 overflow-hidden bg-gray-900">
       {/* Set start */}
       <button
         type="button"
@@ -27,7 +27,8 @@ export default function Controlbar(props) {
           else setMode("setstart");
         }}
       >
-        <i className="mr-4">{person}</i> <p>Add Source Node</p>
+        <i className="sm:mr-4">{person}</i>
+        <p className="hidden  sm:flex">Add Source Node</p>
       </button>
       {/* Set target */}
       <button
@@ -41,7 +42,8 @@ export default function Controlbar(props) {
           else setMode("setend");
         }}
       >
-        <i className="mr-4">{destination}</i> <p>Add Destination Node</p>
+        <i className="sm:mr-4">{destination}</i>{" "}
+        <p className="hidden  sm:flex">Add Destination Node</p>
       </button>
       {/* Add wall */}
       <button
@@ -55,7 +57,8 @@ export default function Controlbar(props) {
           else setMode("addwall");
         }}
       >
-        <i className="mr-4">{wall}</i> <p>Wall</p>
+        <i className="sm:mr-4">{wall}</i>{" "}
+        <p className="hidden  sm:flex">Wall</p>
       </button>
       {/* Add energy */}
       {algo === "dijkstra" ? null : (
@@ -70,7 +73,8 @@ export default function Controlbar(props) {
             else setMode("addenergy");
           }}
         >
-          <i className="mr-4">{energy}</i> <p>Add negative weight</p>
+          <i className="sm:mr-4">{energy}</i>{" "}
+          <p className="hidden  sm:flex">Add negative weight</p>
         </button>
       )}
 
@@ -79,11 +83,25 @@ export default function Controlbar(props) {
         type="button"
         className=" flex flex-row bg-blue-600 rounded m-2 p-2"
         onClick={() => {
-          reset();
+          reset(grid);
         }}
       >
-        <i className="mr-4">{refresh}</i> <p>Reset</p>
+        <i className="sm:mr-4">{refresh}</i>{" "}
+        <p className="hidden  sm:flex">Reset</p>
       </button>
+
+      {/* Clear Board */}
+      <button
+        type="button"
+        className=" flex flex-row bg-blue-600 rounded m-2 p-2"
+        onClick={() => {
+          clearboard(grid);
+        }}
+      >
+        <i className="sm:mr-4">{refresh}</i>{" "}
+        <p className="hidden  sm:flex">clearboard</p>
+      </button>
+
       {/* Run */}
       <button
         type="button"
@@ -93,7 +111,8 @@ export default function Controlbar(props) {
           Visualize(algo);
         }}
       >
-        <i className="mr-4">{play}</i> <p>Visualize</p>
+        <i className="sm:mr-4">{play}</i>{" "}
+        <p className="hidden  sm:flex">Visualize</p>
       </button>
       {/* Choose algorithm */}
       <select

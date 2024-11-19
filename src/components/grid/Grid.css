@@ -1,4 +1,3 @@
-/* src/components/Grid.css */
 .grid {
   display: grid;
   grid-template-columns: repeat(30, 0fr);
@@ -9,6 +8,22 @@
   background-color: white;
   border: 1px solid #ccc;
   transition: 0.3s;
+  width: 16px;
+  height: 16px;
+}
+
+@media (min-width: 768px) {
+  .grid-cell {
+    height: 24px;
+    width: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-cell {
+    height: 28px;
+    width: 28px;
+  }
 }
 
 .start {
@@ -29,4 +44,8 @@
 
 .path {
   background-color: blue;
+}
+
+.traversed {
+  background-color: bisque;
 }
