@@ -3,12 +3,12 @@ import { MAX_ROWS, MAX_COLS } from "./utils/constants";
 import Grid from "./components/grid/Grid";
 import Controlbar from "./components/controlbar/Controlbar";
 import { dijkstra } from "./algorithm/dijkstra";
+import { bellmanFord } from "./algorithm/bellman-ford";
 
 export default function App() {
   const [startTile] = useState({ row: 1, col: 1 });
   const [endTile] = useState({ row: MAX_ROWS - 2, col: MAX_COLS - 2 });
 
-  // mode, setMode, setAlgo, setRes, setRun, setGrid
   const [start, setStart] = useState(false);
   const [end, setEnd] = useState(false);
   const [mode, setMode] = useState("addwall");
@@ -109,32 +109,40 @@ export default function App() {
   }
 
   function clearboard(grid) {
-    console.log("hi")
+    console.log("hi");
     const newGrid = grid.slice();
-    for (let row  = 0; row < MAX_ROWS; row++) {
+    for (let row = 0; row < MAX_ROWS; row++) {
       for (let col = 0; col < MAX_COLS; col++) {
         const tile = newGrid[row][col];
-        tile.isStart = false
-        tile.isEnd = false
-        tile.isWall = false
-        tile.isEnergy = false
-        tile.distance = Infinity
-        tile.isPath = false
-        tile.isTraversed = false     
+        tile.isStart = false;
+        tile.isEnd = false;
+        tile.isWall = false;
+        tile.isEnergy = false;
+        tile.distance = Infinity;
+        tile.isPath = false;
+        tile.isTraversed = false;
+        const tile2 = document.getElementById(`${tile.row}-${tile.col}`);
+        tile2.classList.remove("traversed");
+        tile2.classList.remove("path");
       }
     }
+    setStart(false);
+    setEnd(false);
     setGrid(newGrid);
   }
 
   function reset(grid) {
-    console.log("hi")
+    console.log("hi");
     const newGrid = grid.slice();
-    for (let row  = 0; row < MAX_ROWS; row++) {
+    for (let row = 0; row < MAX_ROWS; row++) {
       for (let col = 0; col < MAX_COLS; col++) {
         const tile = grid[row][col];
-        tile.distance = Infinity
-        tile.isPath = false
-        tile.isTraversed = false      
+        tile.distance = Infinity;
+        tile.isPath = false;
+        tile.isTraversed = false;
+        const tile2 = document.getElementById(`${tile.row}-${tile.col}`);
+        tile2.classList.remove("traversed");
+        tile2.classList.remove("path");
       }
     }
     setGrid(newGrid);
@@ -153,7 +161,6 @@ export default function App() {
     }
 
     setGrid(newGrid);
-    setRun(false);
   }
 
   function animatePath(traversedTiles, path, startTile, endTile) {
@@ -190,12 +197,12 @@ export default function App() {
           tile.classList.remove("traversed");
           tile.classList.add("path");
         }
-      }, 30 * traversedTiles.length + 300 * i);
+      }, 30 * traversedTiles.length + 75 * i);
     }
 
     setTimeout(
-      () => console.log("Animation complete."),
-      30 * traversedTiles.length + 300 * path.length
+      () => setRun(false),
+      30 * traversedTiles.length + 75 * path.length
     );
   }
 
@@ -214,7 +221,7 @@ export default function App() {
         clearboard={clearboard}
         Visualize={Visualize}
       />
-      <Grid grid={grid} handleClick={handleClick} />
+      <Grid grid={grid} run={run} handleClick={handleClick} />
     </div>
   );
 }

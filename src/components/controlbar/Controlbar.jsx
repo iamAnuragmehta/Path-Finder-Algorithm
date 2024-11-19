@@ -123,7 +123,7 @@ export default function Controlbar(props) {
         <option value="bellman-ford">Bellman-Ford algorithm</option>
       </select>
       {/* Layout */}
-      <select className="rounded m-2 p-2" onChange={() => setGrid()}>
+      <select className="rounded m-2 p-2" onChange={() => {}}>
         <option value="custom">Custom</option>
         <option value="layout1">Layout 1</option>
         <option value="layout2">Layout 2</option>

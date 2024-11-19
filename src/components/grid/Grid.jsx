@@ -2,7 +2,7 @@
 import "./Grid.css";
 
 export default function Grid(props) {
-  const { grid, handleClick } = props;
+  const { grid, run, handleClick } = props;
 
   return (
     <div className="flex mt-28 sm:mt-0 sm:ml-20 sm:mr-52 justify-center p-8">
@@ -17,7 +17,11 @@ export default function Grid(props) {
                 ${node.isEnd ? "end" : ""} 
                 ${node.isWall ? "wall" : ""}
                 ${node.isEnergy ? "energy" : ""}`}
-                onClick={() => handleClick(node.row, node.col)}
+                onClick={() => {
+                  if (!run) {
+                    handleClick(node.row, node.col);
+                  }
+                }}
                 // for adding walls by click and drag
                 onMouseDown={() => {}} // start wall edit mode
                 onMouseMove={() => {}} // add or remove wall
